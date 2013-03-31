@@ -65,6 +65,10 @@ Services supported:
 
 Need support with Singly? [Go here](https://singly.com/docs/contact).
 
+== Screenshots ==
+
+1. WordPress login screen with several social services enabled.
+
 == Frequently Asked Questions ==
 
 
