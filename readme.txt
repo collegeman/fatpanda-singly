@@ -6,7 +6,7 @@ Requires at least: 2.9
 Tested up to: 3.5.1
 Stable tag: 0.1
 
-Allow your users to sign in using Facebook, Twitter, Gmail, and 34 other services.
+Allow your users to sign in using Facebook, Twitter, Gmail, and 29 other services.
 
 == Description ==
 
