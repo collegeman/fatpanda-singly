@@ -79,6 +79,7 @@ add_action(constant('WP_DEBUG') || constant('FPS_DEBUG') ? 'wp_loaded' : 'fps_ac
 add_action('parse_request', 'fps_parse_request');
 add_action('login_footer', 'fps_login_footer');
 add_action('admin_init', 'fps_admin_init');
+add_action('get_avatar', 'fps_get_avatar', 10, 5);
 
 /**
  * Simple model for access tokens obtained through Singly API
@@ -95,6 +96,24 @@ class FpsAccessToken {
     $this->account = $auth_result->account;
   }
 
+}
+
+function fps_get_avatar($avatar = '', $id_or_email, $size = 96, $default = '', $alt = false) {
+  if ($id_or_email) {
+    $user = get_user_by('id', $id_or_email);
+    if (!$user || !$user->ID) {
+      $user = get_user_by('email', $id_or_email);
+    }
+    if ($user && $user->ID) {
+      if ($profile = get_user_meta($user->ID, 'fps:profile')) {
+        if ($profile[0]->thumbnail_url) {
+          $avatar = preg_replace("/src='.*?'/", "src='{$profile[0]->thumbnail_url}'", $avatar);
+        }
+      }
+    }
+  }
+
+  return $avatar;
 }
 
 function fps_admin_init() {
@@ -340,6 +359,8 @@ function fps_wordpress_auth($token) {
   $user->data->user_nicename = $profile->handle ? $profile->handle : $profile->name;
   $user->data->user_url = $profile->url;
   
+  // TODO: consider figuring out how to update default thumbnail_url
+
   $to_save = (array) $user->data;
   // don't update description
   unset($to_save['description']);
